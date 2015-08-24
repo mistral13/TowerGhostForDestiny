@@ -933,20 +933,43 @@ var app = new(function() {
         var buckets = $("div.profile .itemBucket:visible").css("height", "auto");
         if (self.padBucketHeight() == true) {
             var bucketSizes = {};
+			var itemHeight = 0;
             buckets.each(function() {
                 var bucketType = this.className.split(" ")[2];
                 var isVault = this.className.indexOf("12") > -1;
                 var columnsPerBucket = isVault ? 4 : tgd.DestinyBucketColumns[bucketType];
                 var bucketHeight = Math.ceil($(this).find(".bucket-item:visible").length / columnsPerBucket) * ($(this).find(".bucket-item:visible:eq(0)").height() + 2);
+
+				//you might know a better way to get itemHeight
+				if(isVault){
+					$(this).addClass('isVault');
+				} else {
+					$(this).addClass('notVault');
+				}
+				if(($(this).find(".bucket-item:visible:eq(0)").height())&&($(this).find(".bucket-item:visible:eq(0)").height()>itemHeight)) {
+					itemHeight = $(this).find(".bucket-item:visible:eq(0)").height();
+				}
+				
                 if (!(bucketType in bucketSizes)) {
                     bucketSizes[bucketType] = [bucketHeight];
                 } else {
                     bucketSizes[bucketType].push(bucketHeight);
                 }
             });
+			var maxNonVaultHeight = (itemHeight+2)*3;
             _.each(bucketSizes, function(sizes, type) {
                 var maxHeight = Math.max.apply(null, sizes);
-                buckets.filter("." + type).css("min-height", maxHeight);
+				console.log([type,sizes,maxHeight]);
+				var useHeight = maxHeight;
+				var useMargin = itemHeight + 2;
+				if(maxHeight > maxNonVaultHeight) {
+					useHeight = maxNonVaultHeight;
+					buckets.filter(".notVault." + type).css("min-height", useHeight).css('margin-bottom',useMargin);
+					buckets.filter(".isVault." + type).css("min-height", maxHeight);
+				} else {
+					buckets.filter(".notVault." + type).css("min-height", maxHeight);
+					buckets.filter(".isVault." + type).css("min-height", maxHeight);
+				}
             });
             // gets all the sub class areas and makes them the same heights. I'm terrible at JQuery/CSS/HTML stuff.
             {
