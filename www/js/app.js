@@ -959,7 +959,6 @@ var app = new(function() {
 			var maxNonVaultHeight = (itemHeight+2)*3;
             _.each(bucketSizes, function(sizes, type) {
                 var maxHeight = Math.max.apply(null, sizes);
-				console.log([type,sizes,maxHeight]);
 				var useHeight = maxHeight;
 				var useMargin = itemHeight + 2;
 				if(maxHeight > maxNonVaultHeight) {
