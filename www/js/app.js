@@ -524,7 +524,7 @@ var app = new(function() {
         if (element) lastElement = element
 		
 		//Tony regex for 404's
-		content = content.replace(/(<img\ssrc=")(.*?)("\s?>)/g,'');
+		content = content.replace(/(<div class="destt-talent-icon">\s*<img\ssrc=")(.*?)("\s?>)/g,'<div class="destt-talent-icon">');
 		
         var instanceId = $(lastElement).attr("instanceId"),
             activeItem, $content = $("<div>" + content + "</div>");
