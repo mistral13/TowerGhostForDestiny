@@ -319,7 +319,7 @@ Item.prototype = {
                 weaponFilter = $parent.weaponFilter() == "0" || $parent.weaponFilter() == self.typeName;
             } else {
                 var types = _.map(_.pluck(self.perks, 'name'), function(name) {
-                    return name.split(" ")[0];
+                    return name && name.split(" ")[0];
                 });
                 dmgFilter = $parent.dmgFilter().length === 0 || _.intersection($parent.dmgFilter(), types).length > 0;
                 armorFilter = $parent.armorFilter() == "0" || $parent.armorFilter() == self.bucketType;
